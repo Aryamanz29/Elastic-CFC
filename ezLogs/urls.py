@@ -1,7 +1,8 @@
-from django.urls import path
-from .views import model_form_upload
+from .views import DocumentAPIViewset
+from rest_framework.routers import DefaultRouter
 
-urlpatterns = [
- path('', model_form_upload, name='home'),
-#  path('test/', logFormatDisplay, name='test'),   
-]
+router = DefaultRouter()
+router.register("document", DocumentAPIViewset)
+
+urlpatterns = []
+urlpatterns += router.urls

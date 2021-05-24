@@ -1,3 +1,14 @@
-from django.shortcuts import render
+from ezLogs.serializers import DocumentSerializer
+from .models import Document
+from rest_framework.viewsets import GenericViewSet
+from rest_framework import mixins
 
-# Create your views here.
+
+class DocumentAPIViewset(
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.ListModelMixin,
+    GenericViewSet,
+):
+    queryset = Document.objects.all()
+    serializer_class = DocumentSerializer

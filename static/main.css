@@ -1,0 +1,19 @@
+body{
+    background-color: rgb(85, 87, 87);
+}
+.main-content{
+    background-color:black;
+    color:white;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+.main-content a{
+    text-decoration: none;
+    color: white;
+}
+.main-content a:hover{
+    color: peachpuff;
+}

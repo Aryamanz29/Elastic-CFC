@@ -8,3 +8,15 @@ class Document(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class LogDetail(models.Model):
+    logfile = models.ForeignKey(Document, on_delete=models.CASCADE)
+    line = models.TextField(blank=True, null=True)
+    count = models.BigIntegerField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.logfile.name} line - {self.count}"
+
+    class Meta:
+        ordering = ["count"]

@@ -12,3 +12,4 @@ sqlparse==0.4.1
 urllib3==1.26.4
 black==20.8b1
 flake8==3.8.4
+django-cors-headers-3.7.0

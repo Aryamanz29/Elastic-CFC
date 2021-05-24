@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "ezLogs",
     "django_elasticsearch_dsl",
     "rest_framework",
+    "corsheaders",
 ]
 ELASTICSEARCH_DSL = {
     "default": {"hosts": "localhost:9200"},
@@ -48,6 +49,7 @@ ELASTICSEARCH_DSL = {
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -71,6 +73,11 @@ TEMPLATES = [
             ],
         },
     },
+]
+
+CORS_ORIGIN_WHITELIST = [
+    "http://127.0.0.1:3000",
+    "http://localhost:3000",
 ]
 
 WSGI_APPLICATION = "core.wsgi.application"

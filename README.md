@@ -1,5 +1,15 @@
 # Elastic-CFC
-EzLogs 📝
+### EzLogs 📝
+
+***Logs analyser** for developers build on top of [elasticsearch](https://www.elastic.co/)*
+
+## Tech Stack We Used :
+- 1. Django 
+- 2. Django Rest Framework
+- 3. React
+- 4. Elastic Search
+- 5. Celery & Redis
+
 
 ## Setup:
 
@@ -67,6 +77,11 @@ $pyhton3 manage.py runserver
  - http://localhost:8000/api/search/?q=<SEARCH_QUERY>&file_id=<File_ID> *(For getting search result based upon user search query, METHOD = GET/POST)*
  
 <hr>
+
+## Contributors
+- [Sankalp](https://github.com/codesankalp)
+- [Aryaman](https://github.com/Aryamanz29)
+- [Sai Prashant](https://github.com/Sai-02)
 
 ### Screenshots
 

@@ -14,6 +14,10 @@ class LogDetailDocument(Document):
         }
     )
 
+    class Index:
+        name = "log_detail"
+        settings = {"number_of_shards": 1, "number_of_replicas": 0}
+
     class Django:
 
         model = LogDetail

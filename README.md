@@ -84,6 +84,7 @@ $pyhton3 manage.py runserver
 - [Sai Prashant](https://github.com/Sai-02)
 
 ### Screenshots
+![frontend](./screenshots/frontend.png)
 
 ![ss1](./screenshots/ss1.png)
 

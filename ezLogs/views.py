@@ -11,6 +11,7 @@ from celery import shared_task
 from django.shortcuts import get_object_or_404
 from .documents import LogDetailDocument
 from rest_framework.views import APIView
+import os
 
 
 @shared_task
@@ -42,7 +43,7 @@ class DocumentAPIViewset(
         serializer.is_valid(raise_exception=True)
         serializer.save()
         print(serializer.data)
-        create_log_detail.delay(serializer.data)
+        create_log_detail(serializer.data)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
@@ -52,6 +53,8 @@ def some_log_lines(request, id):
     # http://localhost:8000/api/get-some-log-lines/<FILE_ID>/
 
     doc = get_object_or_404(Document, pk=id)
+    stream = os.popen("python3 manage.py search_index --rebuild -f")
+    output = stream.read()  # noqa
     logs = LogDetail.objects.filter(logfile=doc)[:10]
     data = LogDetailSerializer(logs, many=True).data
     return JsonResponse(data, safe=False)
@@ -65,7 +68,7 @@ class LogSearchView(APIView):
         search_query = request.query_params.get("q", "")
         log_file_id = request.query_params.get("file_id", None)
         doc = Document.objects.filter(id=log_file_id).first()
-        # print(search_query)
+        print(search_query, log_file_id, doc)
         search = LogDetailDocument.search().filter("match", line=search_query)
         final_res = []
         for res in search:

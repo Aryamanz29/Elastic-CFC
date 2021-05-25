@@ -66,9 +66,20 @@ $./manage.py search_index --rebuild
 *Note : You have to do **Step - 6 and 7** everytime when you upload a new **log file** through **API***
 
 ```
-$pyhton3 manage.py runserver
+$python3 manage.py runserver
 
 ```
+
+### 8. Run Frontend 
+
+```
+cd frontend/
+npm i
+npm run start
+```
+
+Now goto http://localhost:3000/ to test and run ezLogger.
+
 <hr>
 
 ### REST API'S FOR THIS PROJECT

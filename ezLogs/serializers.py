@@ -12,3 +12,8 @@ class LogDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = LogDetail
         fields = "__all__"
+
+
+class LogSeachSerializer(serializers.Serializer):
+    line = serializers.CharField()
+    count = serializers.IntegerField()

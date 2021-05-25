@@ -14,6 +14,8 @@ click-repl==0.1.6
 Django==3.2.3
 django-cors-headers==3.7.0
 django-elasticsearch-dsl==7.2.0
+django-elasticsearch-dsl-drf==0.22.1
+django-nine==0.2.4
 djangorestframework==3.12.4
 elasticsearch==7.12.1
 elasticsearch-dsl==7.3.0

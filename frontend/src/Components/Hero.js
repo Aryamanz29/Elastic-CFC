@@ -16,6 +16,8 @@ const Hero = () => {
   const [query, setQuery] = useState("");
   const [searchSection, setSearchSection] = useState(false);
   const [queryResponse, setQueryResponse] = useState([]);
+  const [id,setID]=useState("");
+  const [isQuerySearched,setIsQuerySearched]=useState(false);
   const handleSubmitForFile = async (e) => {
     e.preventDefault();
     if (!checkDescription(description)) {
@@ -39,7 +41,7 @@ const Hero = () => {
     formData.append("log_file", file, file.name);
     formData.append("name", description);
     console.log(formData);
-    const url = `https://e1a90a1d2f17.ngrok.io/api/document/`;
+    const url = `http://localhost:8000/api/document/`;
     try {
       let response = await axios.post(url, formData, {
         headers: {
@@ -54,10 +56,12 @@ const Hero = () => {
     return null;
   };
   const getLogLines = async (id) => {
+    setID(id);
     axios
-      .get(`https://e1a90a1d2f17.ngrok.io/api/get-some-log-lines/${id}/`)
+      .get(`http://localhost:8000/api/get-some-log-lines/${id}/`)
       .then((res) => setFileLineResponse(res.data));
   };
+  
   const getLogLines2 = (data) => {
     let html = data.map((line) => {
       return <li key={line.id}>{line.line}</li>;
@@ -67,8 +71,9 @@ const Hero = () => {
   };
   const showResponse = (data) => {
     let html = data.map((line) => {
-      return <li key={line.id}>{line.props.children}</li>;
+      return <li key={line.count}>{line.line}</li>;
     });
+    return html;
   };
   const checkDescription = (description) => (description === "" ? false : true);
 
@@ -80,13 +85,16 @@ const Hero = () => {
     let response = await getQueryResponse(query, fileLineResponse);
   };
   const getQueryResponse = async (query, fileLineResponse) => {
+  
     let r = axios
       .get(
-        `https://e1a90a1d2f17.ngrok.io/api/search/?q=${query}&file_id=${fileLineResponse[0].id}`
+        `http://localhost:8000/api/search/?q=${query}&file_id=${id}`
       )
       .then((res) => setQueryResponse(res.data));
+      setIsQuerySearched(true);
+
+    console.log(queryResponse);
   };
-  console.log(fileLineResponse);
   return (
     <>
       <section className="hero-section">
@@ -174,9 +182,11 @@ const Hero = () => {
               </button>
             </div>
           </form>
-          <article className="query-response">
-            <ul>{showResponse(queryResponse)}</ul>
-          </article>
+          {
+            isQuerySearched?( <article className="query-response">
+            <ul className="response-ul">{showResponse(queryResponse)}</ul>
+          </article>):("")
+          }
         </section>
       ) : (
         ""

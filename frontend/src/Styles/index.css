@@ -178,3 +178,15 @@ Global Styles
   font-size: 2rem;
   color: #00bfff;
 }
+/* query response */
+.query-response{
+  padding: 1rem;
+  background:yellow;
+  color: purple;
+  border-radius:1rem;
+  overflow: hidden
+  
+}
+.response-ul{
+  list-style: none
+}

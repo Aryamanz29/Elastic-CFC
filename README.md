@@ -6,11 +6,11 @@
 <img src="https://user-images.githubusercontent.com/56113566/141816399-3a712641-2821-42c7-83de-8c023fc1d359.png">
 </p>
 
-A ***Logs analyser** for developers build on top of [elasticsearch](https://www.elastic.co/)*
+"A ***Logs analyser** for developers build on top of [elasticsearch](https://www.elastic.co/)*"
 
 ![-------------------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
-## Open Source Programs:
+## Open Source Programs ☀ :
 
 - [Delta Winter of Code](https://dwoc.io/organisations/6150be5f2f6db90012a31058)
 
@@ -23,7 +23,7 @@ A ***Logs analyser** for developers build on top of [elasticsearch](https://www.
 
 ![-------------------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
-## Tech Stack :
+## Tech Stack 🚀 :
 - 1. Django 
 - 2. Django Rest Framework
 - 3. React
@@ -32,7 +32,7 @@ A ***Logs analyser** for developers build on top of [elasticsearch](https://www.
 
 ![-------------------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
-## Setup:
+## Setup 👨‍💻:
 
 ### 1.Virtual Environment Setup :
 ##### For Linux :
@@ -126,6 +126,10 @@ npm run start
 
 ![-------------------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
+## Want To Contribute ? 🙋
+
+#### See Ideas List [here](https://github.com/Aryamanz29/Elastic-CFC/issues/17)
+
 <h2 align="center"> ✨ CONTRIBUTORS ✨</h2>
 
 <p align="center">
@@ -136,7 +140,7 @@ npm run start
 
 ![-------------------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
-## Working Screenshots :
+## Working Screenshots 🕵 :
 
 
 ![Screenshot from 2021-11-14 16-10-04](https://user-images.githubusercontent.com/56113566/141829180-a6725a51-9491-43b3-abd2-c23d742b9339.png)
@@ -148,5 +152,6 @@ npm run start
 ### Sample log file `sample-log.log` :
 
 ![Screenshot from 2021-11-14 16-14-04](https://user-images.githubusercontent.com/56113566/141829196-620f3297-961c-469e-9754-f5639aa1a85d.png)
+
 
 ![-------------------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)

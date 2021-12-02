@@ -39,7 +39,7 @@
 ### 1.Virtual Environment Setup :
 ##### For Linux :
 ```
-$. python3 venv env 
+$. python3 -m venv env 
 $. source env/bin/activate
 ```
 ##### For Windows :
@@ -64,7 +64,6 @@ $. pip install -r requirements.txt
 ```
 Note: For Windows Users Replace python3 with python
 
-$. cd core/
 $. python3 manage.py makemigrations
 $. python3 manage.py migrate
 $. python3 manage.py createsuperuser
@@ -157,3 +156,36 @@ npm run start
 
 
 ![-------------------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
+
+
+## Contributing Guidelines :
+
+1. Create a branch with feature/bug-fix name.
+
+```
+git branch <branch-name>
+
+git checkout <branch-name>
+
+```
+- Shorthand for creating a branch and checkout to the branch
+
+```
+
+git checkout -b <branch-name>
+
+```
+
+2. After making the changes, run these commands.
+
+```
+
+git add . # To add all files to the staging area.
+
+git add <file-name> # To add specific file to the staging area.
+
+git commit -m "commit message"
+
+git push # While running for the first time, you'll encounter an error. Run the suggested command given by git cli.
+
+```

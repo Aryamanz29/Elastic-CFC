@@ -1,0 +1,35 @@
+services:
+    frontend:
+        container_name: ezlogs-frontend
+        build: ./frontend
+        volumes:
+            - ./frontend:/app
+        ports:
+            - "3000:3000"
+        depends_on:
+            - backend
+
+    backend:
+        container_name: ezlogs-backend
+        build: .
+        volumes:
+            - .:/app
+        ports:
+            - 8000:8000
+        environment:
+            - CELERY_BROKER_URL=redis://redis:6379/0
+            - CELERY_RESULET_BACKEND=redis://redis:6379/0
+        depends_on:
+            - redis
+
+    celery:
+        build: .
+        command: celery -A core worker -l INFO
+        environment:
+            - CELERY_BROKER_URL=redis://redis:6379/0
+            - CELERY_RESULET_BACKEND=redis://redis:6379/0
+        depends_on:
+            - redis
+
+    redis:
+        image: redis:alpine

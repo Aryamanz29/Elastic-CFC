@@ -26,12 +26,7 @@ SECRET_KEY = "django-insecure-rem7$y0)lhtr6-w@-)2b(8g*9cb95@q4h5pqp91cf1vjv!7zh_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
-    '[::1]',
-    'frontend'
-]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "[::1]", "frontend"]
 
 # Application definition
 
@@ -82,11 +77,7 @@ TEMPLATES = [
     },
 ]
 
-CORS_ORIGIN_WHITELIST = [
-    "http://127.0.0.1:3000",
-    "http://localhost:3000",
-    "http://frontend:3000"
-]
+CORS_ORIGIN_WHITELIST = ["http://127.0.0.1:3000", "http://localhost:3000", "http://frontend:3000"]
 
 WSGI_APPLICATION = "core.wsgi.application"
 

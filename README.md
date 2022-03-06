@@ -32,7 +32,14 @@
 
 ![-------------------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
-## Setup 👨‍💻:
+## Docker Setup:
+```
+docker-compose up --build
+```
+
+![-------------------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
+
+## Local Setup 👨‍💻:
 
 ####  NOTE : You need to first setup [elastic search](https://www.elastic.co/) on our machine, Follow [this guide](https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-elasticsearch-on-ubuntu-18-04)
 

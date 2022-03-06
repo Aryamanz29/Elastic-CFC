@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,8 +26,7 @@ SECRET_KEY = "django-insecure-rem7$y0)lhtr6-w@-)2b(8g*9cb95@q4h5pqp91cf1vjv!7zh_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "[::1]", "frontend"]
 
 # Application definition
 
@@ -43,8 +43,9 @@ INSTALLED_APPS = [
     "rest_framework",
     "corsheaders",
 ]
+
 ELASTICSEARCH_DSL = {
-    "default": {"hosts": "localhost:9200"},
+    "default": {"hosts": os.environ.get("ELASTIC_HOST", "localhost:9200")},
 }
 
 MIDDLEWARE = [
@@ -76,10 +77,7 @@ TEMPLATES = [
     },
 ]
 
-CORS_ORIGIN_WHITELIST = [
-    "http://127.0.0.1:3000",
-    "http://localhost:3000",
-]
+CORS_ORIGIN_WHITELIST = ["http://127.0.0.1:3000", "http://localhost:3000", "http://frontend:3000"]
 
 WSGI_APPLICATION = "core.wsgi.application"
 
@@ -129,3 +127,8 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+
+
+# Celery Config
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", "redis://127.0.0.1:6379/0")
+CELERY_RESULT_BACKEND = os.environ.get("CELERY_RESULT_BACKEND", "redis://127.0.0.1:6379/0")

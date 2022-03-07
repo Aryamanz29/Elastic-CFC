@@ -5,6 +5,27 @@ import uploadLoader from "../images/uploadLoader.gif";
 import Loader from "react-loader-spinner";
 import { FaWindowClose } from "react-icons/fa";
 import { MDBCloseIcon } from "react-icons/bs";
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import { styled } from '@mui/material/styles';
+import Stack from '@mui/material/Stack';
+import Paper from '@mui/material/Paper';
+import Welcome from "./Welcome";
+
+
+
+const Input = styled('input')({
+  display: 'none',
+});
+
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: 'center',
+  color: theme.palette.text.secondary,
+}));
 
 const Hero = () => {
   const [descriptionError, setDescriptionError] = useState(false);
@@ -16,8 +37,12 @@ const Hero = () => {
   const [query, setQuery] = useState("");
   const [searchSection, setSearchSection] = useState(false);
   const [queryResponse, setQueryResponse] = useState([]);
-  const [id,setID]=useState("");
-  const [isQuerySearched,setIsQuerySearched]=useState(false);
+  const [id, setID] = useState("");
+  const [isQuerySearched, setIsQuerySearched] = useState(false);
+  const [submitButtonEnabled, setSubmitButtonEnabled] = useState(false);
+
+
+
   const handleSubmitForFile = async (e) => {
     e.preventDefault();
     if (!checkDescription(description)) {
@@ -61,7 +86,7 @@ const Hero = () => {
       .get(`http://localhost:8000/api/get-some-log-lines/${id}/`)
       .then((res) => setFileLineResponse(res.data));
   };
-  
+
   const getLogLines2 = (data) => {
     let html = data.map((line) => {
       return <li key={line.id}>{line.line}</li>;
@@ -85,41 +110,105 @@ const Hero = () => {
     let response = await getQueryResponse(query, fileLineResponse);
   };
   const getQueryResponse = async (query, fileLineResponse) => {
-  
+
     let r = axios
       .get(
         `http://localhost:8000/api/search/?q=${query}&file_id=${id}`
       )
       .then((res) => setQueryResponse(res.data));
-      setIsQuerySearched(true);
+    setIsQuerySearched(true);
 
     console.log(queryResponse);
   };
   return (
     <>
       <section className="hero-section">
+          <Welcome></Welcome>
         <div className="file-form-container">
+
           <form className="file-form">
-            <div className="description-input-container">
+            <Box
+              component="form"
+              sx={{
+                '& > :not(style)': { m: 1, width: '70ch' },
+              }}
+              noValidate
+              autoComplete="off"
+              >
+              <TextField id="outlined-basic" label="Description" variant="outlined"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                required
+                
+              />
+              {descriptionError ? (
+                <div id="outlined-basic" style={{ color: 'red' }} variant="outlined"
+                
+                
+
+                >Required Field</div>
+                
+              ) : (
+                ``
+                )}
+            </Box>
+            {/* <div className="description-input-container">
               <label className="description">Description</label>
               <input
                 type="text"
                 value={description}
-                className="file-form-description-input"
                 onChange={(e) => setDescription(e.target.value)}
                 required
-              />
-              <span></span>
-              {descriptionError ? (
-                <span className="required-input">
-                  This is a required field !
-                </span>
-              ) : (
-                ``
-              )}
-            </div>
+                className="file-form-description-input"
+                />
 
-            <input
+              </div> */}
+
+
+            <Stack spacing={6}>
+              {/* <div className="m-5 p-5">
+
+                <label htmlFor="contained-button-file" className="m-5 p-5" margin="dense">
+                  <Input id="contained-button-file" required type="file"
+
+
+
+                  />
+                  <Button variant="contained" margin="dense" >
+                    Upload
+                  </Button>
+                </label>
+
+              </div> */}
+              <label htmlFor="contained-button-file">
+                <Input id="contained-button-file"
+                  accept=".log"
+                  onChange={(e) => {
+                    console.log(e.target.files[0]);
+                    setFile(e.target.files[0]);
+                    setSubmitButtonEnabled(true)
+                  }}
+
+                  type="file" />
+                <Button variant="contained" component="span">
+                  Upload log file
+                </Button>
+              </label>
+
+
+              <div className="m-5 p-5">
+                <Button variant="contained"
+                  type="submit"
+                  id="btn"
+                  onClick={handleSubmitForFile}
+                  disabled={!submitButtonEnabled}
+                >Submit</Button>
+
+              </div>
+
+            </Stack>
+
+            {/* <input
               className="file-input"
               type="file"
               required
@@ -128,9 +217,9 @@ const Hero = () => {
                 console.log(e.target.files[0]);
                 setFile(e.target.files[0]);
               }}
-            />
+            /> */}
 
-            <div className="file-form-submit-btn-container">
+            {/* <div className="file-form-submit-btn-container">
               <button
                 type="submit"
                 id="btn"
@@ -139,7 +228,8 @@ const Hero = () => {
               >
                 submit
               </button>
-            </div>
+            </div> */}
+
           </form>
         </div>
         {isFileUploading ? (
@@ -183,9 +273,9 @@ const Hero = () => {
             </div>
           </form>
           {
-            isQuerySearched?( <article className="query-response">
-            <ul className="response-ul">{showResponse(queryResponse)}</ul>
-          </article>):("")
+            isQuerySearched ? (<article className="query-response">
+              <ul className="response-ul">{showResponse(queryResponse)}</ul>
+            </article>) : ("")
           }
         </section>
       ) : (

@@ -25,7 +25,7 @@ const Hero = () => {
       return;
     }
     setIsFileUploading(true);
-    let response = await getResonse(description);
+    let response = await getResponse(description);
 
     setDescriptionError(false);
     let lines = await getLogLines(response.id);
@@ -35,7 +35,7 @@ const Hero = () => {
       setSearchSection(true);
     }, 1000);
   };
-  const getResonse = async (description) => {
+  const getResponse = async (description) => {
     let formData = new FormData();
     console.log("from get_response", file, description);
     formData.append("log_file", file, file.name);

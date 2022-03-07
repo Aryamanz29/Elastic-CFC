@@ -1,5 +1,14 @@
 from django.db import models
 
+class User(models.Model):
+    username = models.CharField(blank=False,null=False,unique=True,max_length=200)
+    pswd_hash = models.CharField(blank=False,null=False,unique=True,max_length=500)
+    emailid = models.EmailField(blank=False,null=False,unique=True,max_length=200)
+    verified = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.username} & {self.emailid}"
+    
 
 class Document(models.Model):
     name = models.CharField(max_length=255, blank=True)
@@ -11,6 +20,7 @@ class Document(models.Model):
 
 
 class LogDetail(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE,default=None)
     logfile = models.ForeignKey(Document, on_delete=models.CASCADE)
     line = models.TextField(blank=True, null=True)
     count = models.BigIntegerField(blank=True, null=True)
@@ -20,3 +30,4 @@ class LogDetail(models.Model):
 
     class Meta:
         ordering = ["count"]
+

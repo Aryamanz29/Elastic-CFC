@@ -13,6 +13,15 @@ from .documents import LogDetailDocument
 from rest_framework.views import APIView
 import os
 
+class IsAuthenticatedView(APIView):
+    def get(self,request,format=None):
+        if not self.request.session.exists(self.request.session.session_key):
+            self.request.session.create()
+        print("here")
+        if 'user' in self.request.session:
+            return Response({'isauth':True},status=status.HTTP_200_OK)
+        return Response({'isauth':False},status=status.HTTP_200_OK)
+
 
 @shared_task
 def create_log_detail(data):

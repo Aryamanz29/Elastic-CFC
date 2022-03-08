@@ -2,13 +2,21 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Navbar from "./Navbar";
 import Hero from "./Hero";
-function App() {
+import Auth from "./Auth";
+import { render } from "react-dom";
+import { Route, BrowserRouter, Routes } from "react-router-dom";
+
+export default function App() {
   return (
-    <>
+    <BrowserRouter>
       <Navbar />
-      <Hero />
-    </>
+      <Routes>
+        <Route path="/" element={<Auth />} />
+        <Route path="/logs" element={<Hero /> } />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
-export default App;
+const rootDiv = document.getElementById("root");
+render(<App />, rootDiv);

@@ -19,10 +19,12 @@ Global Styles
 
 =============================================
  */
-
+body{
+  background-color: rgb(5, 24, 49);
+}
 .navbar {
   padding: 1rem 0;
-  text-align: center;
+  text-align: left;
   /* background: #007bff; */
   background: #00bfff;
   box-shadow: -2px 7px 22px 4px rgba(201, 197, 197, 0.75);

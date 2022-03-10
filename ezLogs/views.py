@@ -34,6 +34,9 @@ def create_log_detail(data):
         obj = LogDetail(logfile=doc, line=line.strip(), count=index + 1)
         obj.save()
 
+class CreateUserView(APIView):
+    def post(self,request,format=None):
+        pass
 
 class DocumentAPIViewset(
     mixins.CreateModelMixin,

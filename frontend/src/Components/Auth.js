@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import props from "prop-types";
 import { Link , useNavigate } from "react-router-dom";
+import Verification from './Verification';
 import '../Styles/w3.css';
 import '../Styles/Auth.css';
 
@@ -14,7 +15,31 @@ export default function Auth() {
     const [selected,setSelected] = useState(" w3-button w3-hover-black w3-text-blue")
     const [nselected,setNselected] = useState(" w3-button w3-hover-black w3-text-grey")
     const [isLogin,setIsLogin] = useState(true);
+    const [error,setError] = useState("");
     // Methods
+    const handleSignup = () => {
+        if (passwd!==confpasswd){
+            setError("The Passwords didn't match ! Try again .");
+        }
+        else {
+            const requestOptions = {
+                method:'POST',
+                headers:{'Content-Type':'application/json'},
+                body:JSON.stringify({
+                    passwd:passwd,
+                    username:username,
+                    emailid:emailid
+                })
+            }
+            fetch('/api/create-user',requestOptions)
+                .then((response) => {
+                    if (response.ok){
+                        return (<Verification />);
+                    }
+                    setError("Something went wrong !");
+                });
+        }
+    };
     const toggle = () => {
         let temp = selected;
         setSelected(nselected);
@@ -41,23 +66,24 @@ export default function Auth() {
     const handleConfpsswd = (e) => {setConfpsswd(e.target.value)};
     const login = () =>{
         return (
-        <div className="auth-div" >
+        <form className="auth-div w3-half" >
             <h2>Login</h2>
             <br />
             <p className=" w3-text-grey w3-left " >Username</p>
             <input type="text" onChange={handleUsername} className="w3-input w3-border-black w3-round-xlarge w3-border " required/>
             <br />
             <p className="w3-text-grey w3-left " >Password</p>
-            <input type="password" onChange={handlePsswd} className="w3-input w3-border-black w3-round-xlarge w3-border " required/>
+            <input autoComplete="on" type="password" onChange={handlePsswd} className="w3-input w3-border-black w3-round-xlarge w3-border " required/>
             <br />
-            <button type="button" className="w3-button w3-hover-green w3-blue" >LOGIN</button>
-        </div>
+            <button type="button" className="w3-button w3-round w3-hover-green w3-blue" >LOGIN</button>
+        </form>
         );
     }
     const signup = () =>{
         return (
-            <div className="auth-div" >
+            <form className="auth-div" >
             <h2>Create an Account</h2>
+            { error ? <p className="w3-text-red" >{error}</p> : null}
             <br />
             <p className=" w3-text-grey w3-left " >Username</p>
             <input type="text" onChange={handleUsername} className="w3-input w3-border-black w3-round-xlarge w3-border " required/>
@@ -65,19 +91,21 @@ export default function Auth() {
             <input type="email" onChange={handleEmailid} className="w3-input w3-border-black w3-round-xlarge w3-border " required/>
             <br />
             <p className="w3-text-grey w3-left " >Password</p>
-            <input type="password" onChange={handlePsswd} className="w3-input w3-border-black w3-round-xlarge w3-border " required/>
+            <input autoComplete="on" type="password" onChange={handlePsswd} className="w3-input w3-border-black w3-round-xlarge w3-border " required/>
             <p className="w3-text-grey w3-left " >Confirm Password</p>
-            <input type="password" onChange={handleConfpsswd} className="w3-input w3-border-black w3-round-xlarge w3-border " required/>
+            <input autoComplete="on" type="password" onChange={handleConfpsswd} className="w3-input w3-border-black w3-round-xlarge w3-border " required/>
             <br />
-            <button type="button" className="w3-button w3-hover-green w3-blue" >CREATE</button>
-        </div>
+            <button type="button" onClick={handleSignup} className="w3-button w3-round w3-hover-green w3-blue" >CREATE</button>
+        </form>
         );
     }
 
     return (
     <div className="w3-sans-serif">
+        <div>
         <button onClick={showSignUp} className={nselected} ><h5>Sign Up</h5></button>
         <button onClick={showLogin} className={selected} ><h5>Login</h5></button>
+        </div>
         <div className="w3-center w3-margin" >
             { isLogin ? login() : signup() }
         </div>

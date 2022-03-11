@@ -1,17 +1,21 @@
 from django.http.response import JsonResponse
-from ezLogs.serializers import DocumentSerializer, LogDetailSerializer
+from ezLogs.serializers import DocumentSerializer, LogDetailSerializer, UserSerializer
 from .models import Document, LogDetail
+from django.conf import settings
+from django.core.mail import send_mail
 from rest_framework.viewsets import GenericViewSet
 from rest_framework import mixins
 from rest_framework.response import Response
 from rest_framework import status
 from django.conf import settings
 from os import path
+import os
 from celery import shared_task
 from django.shortcuts import get_object_or_404
 from .documents import LogDetailDocument
 from rest_framework.views import APIView
-import os
+import hashlib
+import random
 
 class IsAuthenticatedView(APIView):
     def get(self,request,format=None):
@@ -35,9 +39,34 @@ def create_log_detail(data):
         obj.save()
 
 class CreateUserView(APIView):
+    serializer_class = UserSerializer
     def post(self,request,format=None):
-        pass
+        if not self.request.session.exists(self.request.session.session_key):
+            self.request.session.create()
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            # Creating a new user 
+            username = serializer.data.get('username')
+            psswd = serializer.data.get('pswd_hash')
+            emailid = serializer.data.get('emailid')
+            pswd_hash = hashlib.sha256(psswd).hexdigest()
+            user = User(username=username,pswd_hash=pswd_hash,emailid=emailid)
+            user.save()
+            self.request.session['user'] = User.objects.get(name=username)
+            code = send_verification_email(emailid,username)
+            return Response({'code':code},status=status.HTTP_200_OK)
+        return Response({'code':'ERROR'})
 
+def send_verification_email(email,name):
+    verification_code = random.randint(100000, 1000000)
+    subject = f' Hi , {name} from ElasticCFC '
+    message = f'Your verification CODE is {verification_code} '
+    from_email = settings.EMAIL_HOST_USER
+    recipient_list = [email,]
+    send_mail(subject, message, from_email, recipient_list)
+    return verification_code
+
+        
 class DocumentAPIViewset(
     mixins.CreateModelMixin,
     mixins.RetrieveModelMixin,

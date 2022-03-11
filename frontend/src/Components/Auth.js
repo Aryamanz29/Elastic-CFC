@@ -16,6 +16,7 @@ export default function Auth() {
     const [nselected,setNselected] = useState(" w3-button w3-hover-black w3-text-grey")
     const [isLogin,setIsLogin] = useState(true);
     const [error,setError] = useState("");
+    const [code,setCode] = useState("");
     // Methods
     const handleSignup = () => {
         if (passwd!==confpasswd){
@@ -26,18 +27,14 @@ export default function Auth() {
                 method:'POST',
                 headers:{'Content-Type':'application/json'},
                 body:JSON.stringify({
-                    passwd:passwd,
+                    pswd_hash:passwd,
                     username:username,
                     emailid:emailid
                 })
             }
-            fetch('/api/create-user',requestOptions)
-                .then((response) => {
-                    if (response.ok){
-                        return (<Verification />);
-                    }
-                    setError("Something went wrong !");
-                });
+            fetch('http://localhost:8000/api/create-user/',requestOptions)
+                .then((response) => response.json())
+                .then((data) => setCode(data.code));
         }
     };
     const toggle = () => {
@@ -46,7 +43,7 @@ export default function Auth() {
         setNselected(temp);
     }
     const isAuthenticated = () => {
-        fetch('/api/is-auth')
+        fetch('http://localhost:8000/api/is-auth')
             .then((response) => response.json())
             .then((data) => {
                 if (data.isauth){
@@ -100,6 +97,9 @@ export default function Auth() {
         );
     }
 
+    if (code){
+        return <Verification code={code} />;
+    }
     return (
     <div className="w3-sans-serif">
         <div>

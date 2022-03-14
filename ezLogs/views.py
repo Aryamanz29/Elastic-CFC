@@ -40,6 +40,7 @@ def create_log_detail(data):
 
 class CreateUserView(APIView):
     serializer_class = UserSerializer
+    lookup_url_kwarg = 'password'
     def post(self,request,format=None):
         if not self.request.session.exists(self.request.session.session_key):
             self.request.session.create()
@@ -47,9 +48,11 @@ class CreateUserView(APIView):
         if serializer.is_valid():
             # Creating a new user 
             username = serializer.data.get('username')
-            psswd = serializer.data.get('pswd_hash')
             emailid = serializer.data.get('emailid')
+            psswd = request.data.get(self.lookup_url_kwarg)
+            print(psswd)
             pswd_hash = hashlib.sha256(psswd).hexdigest()
+            print(pswd_hash)
             user = User(username=username,pswd_hash=pswd_hash,emailid=emailid)
             user.save()
             self.request.session['user'] = User.objects.get(name=username)
@@ -65,7 +68,6 @@ def send_verification_email(email,name):
     recipient_list = [email,]
     send_mail(subject, message, from_email, recipient_list)
     return verification_code
-
         
 class DocumentAPIViewset(
     mixins.CreateModelMixin,

@@ -27,7 +27,7 @@ export default function Auth() {
                 method:'POST',
                 headers:{'Content-Type':'application/json'},
                 body:JSON.stringify({
-                    pswd_hash:passwd,
+                    password:passwd,
                     username:username,
                     emailid:emailid
                 })

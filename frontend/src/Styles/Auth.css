@@ -1,11 +1,31 @@
+body{
+    display: flex;
+	justify-content: center;
+	align-items: center;
+}
 .max {
     max-width: 500px;
 }
-
+.but{
+    background-color: rgb(6, 36, 63);
+}
 .auth-div {
+    top: 58%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    position: absolute;
     background-color: white;
     padding: 3%;
     max-width: 400px;
     min-height: 350px;
-    border-radius: 5px;
+}
+.verify-div{
+    top: 50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    position: absolute;
+    background-color: white;
+    padding: 5%;
+    max-width: 500px;
+    min-height: 350px;
 }

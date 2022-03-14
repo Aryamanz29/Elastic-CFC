@@ -9,7 +9,6 @@ import { Route, BrowserRouter, Routes } from "react-router-dom";
 export default function App() {
   return (
     <BrowserRouter>
-      <Navbar />
       <Routes>
         <Route path="/" element={<Auth />} />
         <Route path="/logs" element={<Hero /> } />

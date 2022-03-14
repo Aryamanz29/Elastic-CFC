@@ -1,6 +1,6 @@
 from django.http.response import JsonResponse
 from ezLogs.serializers import DocumentSerializer, LogDetailSerializer, UserSerializer
-from .models import Document, LogDetail
+from .models import Document, LogDetail, User
 from django.conf import settings
 from django.core.mail import send_mail
 from rest_framework.viewsets import GenericViewSet
@@ -49,13 +49,11 @@ class CreateUserView(APIView):
             # Creating a new user 
             username = serializer.data.get('username')
             emailid = serializer.data.get('emailid')
-            psswd = request.data.get(self.lookup_url_kwarg)
-            print(psswd)
+            psswd = request.data.get(self.lookup_url_kwarg).encode()
             pswd_hash = hashlib.sha256(psswd).hexdigest()
-            print(pswd_hash)
             user = User(username=username,pswd_hash=pswd_hash,emailid=emailid)
             user.save()
-            self.request.session['user'] = User.objects.get(name=username)
+            self.request.session['user'] = User.objects.get(username=username).id
             code = send_verification_email(emailid,username)
             return Response({'code':code},status=status.HTTP_200_OK)
         return Response({'code':'ERROR'})
@@ -69,6 +67,17 @@ def send_verification_email(email,name):
     send_mail(subject, message, from_email, recipient_list)
     return verification_code
         
+class VerifiedView(APIView):
+    def post(self,request,format=None):
+        if not self.request.session.exists(self.request.session.session_key):
+            self.request.session.create()
+        if 'user' in self.request.session:
+            user = User.objects.get(id=self.request.session.get('user'))
+            user.verified = True
+            user.save(update_fields=['verified'])
+            return Response({'message':'verified'},status=status.HTTP_200_OK)
+        return Response({"message":'you are not logged in!'},status=status.HTTP_401_UNAUTHORIZED)
+
 class DocumentAPIViewset(
     mixins.CreateModelMixin,
     mixins.RetrieveModelMixin,

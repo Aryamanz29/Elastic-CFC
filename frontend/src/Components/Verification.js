@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import './Styles/Auth.css';
-import './Styles/w3.css';
+import '../Styles/Auth.css';
+import '../Styles/w3.css';
 
 export default function Verification(props) {
     const navigate = useNavigate();
@@ -11,7 +11,8 @@ export default function Verification(props) {
     // methods 
     const handleVerifyCode = (e) =>{setEnteredCode(e.target.value)};
     const handleVerified = () => {
-        if (code===enteredCode){
+        console.log(code);
+        if (code==enteredCode){
             fetch('http://localhost:8000/api/verified/')
                 .then((response) => {
                     if (response.ok){
@@ -28,12 +29,14 @@ export default function Verification(props) {
     }
     return (
     <div>
-        <div className=" w3-center auth-div" >
+        <div className=" w3-half w3-center verify-div" >
             { message ? <p className="w3-text-red" >{message}</p> : null }
-            <h3>Check your mail we have send you a verification code</h3>
-            <p>Enter the 6 digit CODE </p>
-            <input type="text" onChange={handleVerifyCode} />
-            <button onClick={handleVerified} className="w3-button w3-blue" >Submit</button>
+            <h3 className="w3-center" >Check your email we have send you a verification code</h3>
+            <p className="w3-text-grey" >Enter the 6 digit CODE </p>
+            <br />
+            <input className="w3-input w3-round w3-border " type="text" onChange={handleVerifyCode} />
+            <br />
+            <button onClick={handleVerified} className=" w3-round w3-button w3-blue" >Submit</button>
         </div>
     </div>);
 }

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import props from "prop-types";
-import { Link , useNavigate } from "react-router-dom";
+import { BrowserRouter, Link , useNavigate } from "react-router-dom";
 import Verification from './Verification';
+import Navbar from "./Navbar";
 import '../Styles/w3.css';
 import '../Styles/Auth.css';
 
@@ -72,13 +73,13 @@ export default function Auth() {
             <p className="w3-text-grey w3-left " >Password</p>
             <input autoComplete="on" type="password" onChange={handlePsswd} className="w3-input w3-border-black w3-round-xlarge w3-border " required/>
             <br />
-            <button type="button" className="w3-button w3-round w3-hover-green w3-blue" >LOGIN</button>
+            <button type="button" className="w3-button w3-text-white w3-round w3-hover-green but" >LOGIN</button>
         </form>
         );
     }
     const signup = () =>{
         return (
-            <form className="auth-div" >
+            <form className="auth-div w3-half " >
             <h2>Create an Account</h2>
             { error ? <p className="w3-text-red" >{error}</p> : null}
             <br />
@@ -86,13 +87,12 @@ export default function Auth() {
             <input type="text" onChange={handleUsername} className="w3-input w3-border-black w3-round-xlarge w3-border " required/>
             <p className="w3-text-grey w3-left " >Enter a valid email ID for verification</p>
             <input type="email" onChange={handleEmailid} className="w3-input w3-border-black w3-round-xlarge w3-border " required/>
-            <br />
             <p className="w3-text-grey w3-left " >Password</p>
             <input autoComplete="on" type="password" onChange={handlePsswd} className="w3-input w3-border-black w3-round-xlarge w3-border " required/>
             <p className="w3-text-grey w3-left " >Confirm Password</p>
             <input autoComplete="on" type="password" onChange={handleConfpsswd} className="w3-input w3-border-black w3-round-xlarge w3-border " required/>
             <br />
-            <button type="button" onClick={handleSignup} className="w3-button w3-round w3-hover-green w3-blue" >CREATE</button>
+            <button type="button" onClick={handleSignup} className="w3-button w3-text-white w3-round w3-hover-green but" >CREATE</button>
         </form>
         );
     }
@@ -109,6 +109,8 @@ export default function Auth() {
         <div className="w3-center w3-margin" >
             { isLogin ? login() : signup() }
         </div>
+        <br></br>
+        <br></br>
     </div>
     );
 }

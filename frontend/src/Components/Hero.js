@@ -5,6 +5,7 @@ import uploadLoader from "../images/uploadLoader.gif";
 import Loader from "react-loader-spinner";
 import { FaWindowClose } from "react-icons/fa";
 import { MDBCloseIcon } from "react-icons/bs";
+import Navbar from "./Navbar";
 
 const Hero = () => {
   const [descriptionError, setDescriptionError] = useState(false);
@@ -97,6 +98,7 @@ const Hero = () => {
   };
   return (
     <>
+    <Navbar />
       <section className="hero-section">
         <div className="file-form-container">
           <form className="file-form">

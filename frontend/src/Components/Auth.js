@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
-import props from "prop-types";
-import { BrowserRouter, Link , useNavigate } from "react-router-dom";
+import { Link , useNavigate } from "react-router-dom";
 import Verification from './Verification';
 import Navbar from "./Navbar";
 import '../Styles/w3.css';
 import '../Styles/Auth.css';
+import axios from "axios";
 
 export default function Auth() {
     // Default States
+    axios.defaults.withCredentials=true;
     const navigate = useNavigate();
     const [username,setUsername] = useState("");
     const [passwd,setPsswd] = useState("");
@@ -24,18 +25,22 @@ export default function Auth() {
             setError("The Passwords didn't match ! Try again .");
         }
         else {
-            const requestOptions = {
-                method:'POST',
-                headers:{'Content-Type':'application/json'},
-                body:JSON.stringify({
+            const data = {
                     password:passwd,
                     username:username,
                     emailid:emailid
-                })
-            }
-            fetch('http://localhost:8000/api/create-user/',requestOptions)
-                .then((response) => response.json())
-                .then((data) => setCode(data.code));
+            };
+            axios.post('http://localhost:8000/api/create-user/',data,{
+                headers:{
+                    'Content-Type':'application/json',
+                },
+            }).then((response) => {
+                    if (response.status==200){
+                        const data = response.data;
+                        setCode(data.code);
+                    }
+                    else {setError("Something went wrong !")}
+            })
         }
     };
     const toggle = () => {
@@ -44,9 +49,8 @@ export default function Auth() {
         setNselected(temp);
     }
     const isAuthenticated = () => {
-        fetch('http://localhost:8000/api/is-auth')
-            .then((response) => response.json())
-            .then((data) => {
+        axios.get('http://localhost:8000/api/is-auth')
+            .then(({data}) => {
                 if (data.isauth){
                     navigate('/logs');
                 }

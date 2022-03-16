@@ -17,6 +17,10 @@ from rest_framework.views import APIView
 import hashlib
 import random
 
+class UserView(APIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
 class IsAuthenticatedView(APIView):
     def get(self,request,format=None):
         if not self.request.session.exists(self.request.session.session_key):
@@ -54,9 +58,12 @@ class CreateUserView(APIView):
             user = User(username=username,pswd_hash=pswd_hash,emailid=emailid)
             user.save()
             self.request.session['user'] = User.objects.get(username=username).id
+            if 'user' in self.request.session:
+                print(self.request.session.get('user'))
             code = send_verification_email(emailid,username)
             return Response({'code':code},status=status.HTTP_200_OK)
-        return Response({'code':'ERROR'})
+        print(serializer.data)
+        return Response({'code':'ERROR'},status=status.HTTP_400_BAD_REQUEST)
 
 def send_verification_email(email,name):
     verification_code = random.randint(100000, 1000000)
@@ -68,14 +75,13 @@ def send_verification_email(email,name):
     return verification_code
         
 class VerifiedView(APIView):
-    def post(self,request,format=None):
-        if not self.request.session.exists(self.request.session.session_key):
-            self.request.session.create()
+    def get(self,request,format=None):
         if 'user' in self.request.session:
             user = User.objects.get(id=self.request.session.get('user'))
             user.verified = True
             user.save(update_fields=['verified'])
             return Response({'message':'verified'},status=status.HTTP_200_OK)
+        print(request.session.get('user'))
         return Response({"message":'you are not logged in!'},status=status.HTTP_401_UNAUTHORIZED)
 
 class DocumentAPIViewset(

@@ -33,9 +33,6 @@ export default function Auth() {
         if (passwd!==confpasswd){
             setError("The Passwords didn't match ! Try again .");
         }
-        else if (checkPassword()){
-            setError("Password didn't match our standards!");
-        }
         else {
             const data = {
                     password:passwd,

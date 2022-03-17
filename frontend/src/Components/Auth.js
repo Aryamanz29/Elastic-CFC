@@ -9,6 +9,8 @@ import axios from "axios";
 export default function Auth() {
     // Default States
     axios.defaults.withCredentials=true;
+    axios.defaults.xsrfCookieName="csrftoken";
+    axios.defaults.xsrfHeaderName="X-CSRFTOKEN";
     const navigate = useNavigate();
     const [username,setUsername] = useState("");
     const [passwd,setPsswd] = useState("");

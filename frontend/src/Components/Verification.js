@@ -6,6 +6,8 @@ import axios from "axios";
 
 export default function Verification(props) {
     axios.defaults.withCredentials = true;
+    axios.defaults.xsrfCookieName="csrftoken";
+    axios.defaults.xsrfHeaderName="X-CSRFTOKEN";
     const navigate = useNavigate();
     const [code,setCode] = useState(props.code);
     const [enteredCode,setEnteredCode] = useState("");

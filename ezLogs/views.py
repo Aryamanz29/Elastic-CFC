@@ -7,7 +7,6 @@ from rest_framework.viewsets import GenericViewSet
 from rest_framework import mixins
 from rest_framework.response import Response
 from rest_framework import status
-from django.conf import settings
 from os import path
 import os
 from celery import shared_task
@@ -17,12 +16,13 @@ from rest_framework.views import APIView
 import hashlib
 import random
 
-class UserView(APIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
 
 class IsAuthenticatedView(APIView):
+
     def get(self,request,format=None):
+
+        # http://localhost:8000/api/is-auth/
+
         if not self.request.session.exists(self.request.session.session_key):
             self.request.session.create()
         if 'user' in self.request.session:
@@ -42,9 +42,13 @@ def create_log_detail(data):
         obj.save()
 
 class CreateUserView(APIView):
+
     serializer_class = UserSerializer
     lookup_url_kwarg = 'password'
     def post(self,request,format=None):
+
+        # http://localhost:8000/api/create-user/
+
         if not self.request.session.exists(self.request.session.session_key):
             self.request.session.create()
         serializer = self.serializer_class(data=request.data)
@@ -71,7 +75,11 @@ def send_verification_email(email,name):
     return verification_code
         
 class VerifiedView(APIView):
+
     def get(self,request,format=None):
+
+        # http://localhost:8000/api/verified/
+
         if 'user' in self.request.session:
             user = User.objects.get(id=self.request.session.get('user'))
             user.verified = True
@@ -80,9 +88,13 @@ class VerifiedView(APIView):
         return Response({"message":'you are not logged in!'},status=status.HTTP_401_UNAUTHORIZED)
 
 class LoginView(APIView):
+
     lookup_url_kwarg = 'password'
     lookup_url_kwarg2 = 'username'
     def post(self,request,format=None):
+
+        # http://localhost:8000/api/login/
+
         if not self.request.session.exists(self.request.session.session_key):
             self.request.session.create()
         username = request.data.get(self.lookup_url_kwarg2)

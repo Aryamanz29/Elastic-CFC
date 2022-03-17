@@ -13,10 +13,12 @@ class LogDetailSerializer(serializers.ModelSerializer):
         model = LogDetail
         fields = "__all__"
 
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('emailid','username')
+        fields = ('emailid', 'username')
+
 
 class LogSeachSerializer(serializers.Serializer):
     line = serializers.CharField()

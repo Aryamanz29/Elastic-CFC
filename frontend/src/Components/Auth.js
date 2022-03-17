@@ -19,10 +19,22 @@ export default function Auth() {
     const [isLogin,setIsLogin] = useState(true);
     const [error,setError] = useState("");
     const [code,setCode] = useState("");
+    const [checkClass,setCheckClass] = useState("w3-text-red w3-small");
     // Methods
+    const checkPassword = () => {
+        if (passwd.length>=6){
+            setCheckClass("w3-text-green w3-small ")
+            return true;
+        }
+        setCheckClass("w3-text-red w3-small")
+        return false;
+    }
     const handleSignup = () => {
         if (passwd!==confpasswd){
             setError("The Passwords didn't match ! Try again .");
+        }
+        else if (checkPassword()){
+            setError("Password didn't match our standards!");
         }
         else {
             const data = {
@@ -82,7 +94,10 @@ export default function Auth() {
     const showLogin = () => {setIsLogin(true);toggle()};
     const handleUsername = (e) => {setUsername(e.target.value)};
     const handleEmailid = (e) => {setEmailid(e.target.value)};
-    const handlePsswd = (e) => {setPsswd(e.target.value)};
+    const handlePsswd = (e) => {
+        checkPassword();
+        setPsswd(e.target.value)
+    };
     const handleConfpsswd = (e) => {setConfpsswd(e.target.value)};
     const login = () =>{
         return (
@@ -111,6 +126,8 @@ export default function Auth() {
             <p className="w3-text-grey w3-left " >Enter a valid email ID for verification</p>
             <input type="email" onChange={handleEmailid} className="w3-input w3-border-black w3-round-xlarge w3-border " required/>
             <p className="w3-text-grey w3-left " >Password</p>
+            <br />
+            <p className={checkClass} >The password should be atleast 6 charachters long.</p>
             <input autoComplete="on" type="password" onChange={handlePsswd} className="w3-input w3-border-black w3-round-xlarge w3-border " required/>
             <p className="w3-text-grey w3-left " >Confirm Password</p>
             <input autoComplete="on" type="password" onChange={handleConfpsswd} className="w3-input w3-border-black w3-round-xlarge w3-border " required/>

@@ -53,9 +53,14 @@ body{
 }
 
 .file-form-container {
+  top: 50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+  position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
+  max-width: 500px;
 }
 .file-form {
   display: grid;
@@ -87,10 +92,12 @@ body{
   justify-self: start;
   font-size: 1rem;
 }
-.file-input {
-  padding-top: 1.3rem;
-  font-size: 1rem;
-  justify-self: start;
+input[type=file]::file-selector-button {
+  cursor: grab;
+  background-color: aliceblue;
+  font-size: 1.0em;
+  padding: 2%;
+  border-radius: 5px;
 }
 .file-form-submit-btn-container {
   padding-top: 2rem;

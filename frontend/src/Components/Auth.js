@@ -39,10 +39,28 @@ export default function Auth() {
                         const data = response.data;
                         setCode(data.code);
                     }
-                    else {setError("Something went wrong !")}
+                    else {setError("The username or the email ID is already registered !")}
             })
         }
     };
+    const handleLogin = () => {
+        const data = {
+            username:username,
+            password:passwd
+        }
+        axios.post('http://localhost:8000/api/login/',data,{
+            headers:{
+                'Content-Type':'application/json',
+            },
+        }).then((response) => {
+            if (response.status==200){
+                navigate('/logs');
+            }
+            else {
+                setError(response.data.message);
+            }
+        })
+    }
     const toggle = () => {
         let temp = selected;
         setSelected(nselected);
@@ -70,14 +88,15 @@ export default function Auth() {
         return (
         <form className="auth-div w3-half" >
             <h2>Login</h2>
+            { error ? <p className="w3-text-red" >{error}</p> : null}
             <br />
-            <p className=" w3-text-grey w3-left " >Username</p>
+            <p className=" w3-text-grey w3-left " >Username or Email ID</p>
             <input type="text" onChange={handleUsername} className="w3-input w3-border-black w3-round-xlarge w3-border " required/>
             <br />
             <p className="w3-text-grey w3-left " >Password</p>
             <input autoComplete="on" type="password" onChange={handlePsswd} className="w3-input w3-border-black w3-round-xlarge w3-border " required/>
             <br />
-            <button type="button" className="w3-button w3-text-white w3-round w3-hover-green but" >LOGIN</button>
+            <button type="button" onClick={handleLogin} className="w3-button w3-text-white w3-round w3-hover-green but" >LOGIN</button>
         </form>
         );
     }

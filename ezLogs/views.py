@@ -25,7 +25,6 @@ class IsAuthenticatedView(APIView):
     def get(self,request,format=None):
         if not self.request.session.exists(self.request.session.session_key):
             self.request.session.create()
-        print("here")
         if 'user' in self.request.session:
             return Response({'isauth':True},status=status.HTTP_200_OK)
         return Response({'isauth':False},status=status.HTTP_200_OK)
@@ -58,11 +57,8 @@ class CreateUserView(APIView):
             user = User(username=username,pswd_hash=pswd_hash,emailid=emailid)
             user.save()
             self.request.session['user'] = User.objects.get(username=username).id
-            if 'user' in self.request.session:
-                print(self.request.session.get('user'))
             code = send_verification_email(emailid,username)
             return Response({'code':code},status=status.HTTP_200_OK)
-        print(serializer.data)
         return Response({'code':'ERROR'},status=status.HTTP_400_BAD_REQUEST)
 
 def send_verification_email(email,name):
@@ -81,8 +77,27 @@ class VerifiedView(APIView):
             user.verified = True
             user.save(update_fields=['verified'])
             return Response({'message':'verified'},status=status.HTTP_200_OK)
-        print(request.session.get('user'))
         return Response({"message":'you are not logged in!'},status=status.HTTP_401_UNAUTHORIZED)
+
+class LoginView(APIView):
+    lookup_url_kwarg = 'password'
+    lookup_url_kwarg2 = 'username'
+    def post(self,request,format=None):
+        if not self.request.session.exists(self.request.session.session_key):
+            self.request.session.create()
+        username = request.data.get(self.lookup_url_kwarg2)
+        password = request.data.get(self.lookup_url_kwarg).encode()
+        if '.com' in username:
+            user = User.objects.get(emailid=username)
+        else :
+            user = User.objects.get(username=username)
+        if user:
+            hashed = hashlib.sha256(password).hexdigest()
+            if user.pswd_hash == hashed:
+                self.request.session['user'] = user.id
+                return Response({"message":"Done !"},status=status.HTTP_200_OK)
+            return Response({"message":"Incorrect !"},status=status.HTTP_401_UNAUTHORIZED)
+        return Response({"message":"User not found !"},status=status.HTTP_404_NOT_FOUND)
 
 class DocumentAPIViewset(
     mixins.CreateModelMixin,

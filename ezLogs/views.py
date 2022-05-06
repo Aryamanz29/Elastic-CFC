@@ -19,15 +19,15 @@ import random
 
 class IsAuthenticatedView(APIView):
 
-    def get(self,request,format=None):
+    def get(self, request, format=None):
 
         # http://localhost:8000/api/is-auth/
 
         if not self.request.session.exists(self.request.session.session_key):
             self.request.session.create()
         if 'user' in self.request.session:
-            return Response({'isauth':True},status=status.HTTP_200_OK)
-        return Response({'isauth':False},status=status.HTTP_200_OK)
+            return Response({'isauth': True}, status=status.HTTP_200_OK)
+        return Response({'isauth': False}, status=status.HTTP_200_OK)
 
 
 @shared_task
@@ -41,11 +41,13 @@ def create_log_detail(data):
         obj = LogDetail(logfile=doc, line=line.strip(), count=index + 1)
         obj.save()
 
+
 class CreateUserView(APIView):
 
     serializer_class = UserSerializer
     lookup_url_kwarg = 'password'
-    def post(self,request,format=None):
+
+    def post(self, request, format=None):
 
         # http://localhost:8000/api/create-user/
 
@@ -53,30 +55,32 @@ class CreateUserView(APIView):
             self.request.session.create()
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
-            # Creating a new user 
+            # Creating a new user
             username = serializer.data.get('username')
             emailid = serializer.data.get('emailid')
             psswd = request.data.get(self.lookup_url_kwarg).encode()
             pswd_hash = hashlib.sha256(psswd).hexdigest()
-            user = User(username=username,pswd_hash=pswd_hash,emailid=emailid)
+            user = User(username=username, pswd_hash=pswd_hash, emailid=emailid)
             user.save()
             self.request.session['user'] = User.objects.get(username=username).id
-            code = send_verification_email(emailid,username)
-            return Response({'code':code},status=status.HTTP_200_OK)
-        return Response({'code':'ERROR'},status=status.HTTP_400_BAD_REQUEST)
+            code = send_verification_email(emailid, username)
+            return Response({'code': code}, status=status.HTTP_200_OK)
+        return Response({'code': 'ERROR'}, status=status.HTTP_400_BAD_REQUEST)
 
-def send_verification_email(email,name):
+
+def send_verification_email(email, name):
     verification_code = random.randint(100000, 1000000)
     subject = f' Hi , {name} from ElasticCFC '
     message = f'Your verification CODE is {verification_code} '
     from_email = settings.EMAIL_HOST_USER
-    recipient_list = [email,]
+    recipient_list = [email, ]
     send_mail(subject, message, from_email, recipient_list)
     return verification_code
-        
+
+
 class VerifiedView(APIView):
 
-    def get(self,request,format=None):
+    def get(self, request, format=None):
 
         # http://localhost:8000/api/verified/
 
@@ -84,14 +88,16 @@ class VerifiedView(APIView):
             user = User.objects.get(id=self.request.session.get('user'))
             user.verified = True
             user.save(update_fields=['verified'])
-            return Response({'message':'verified'},status=status.HTTP_200_OK)
-        return Response({"message":'you are not logged in!'},status=status.HTTP_401_UNAUTHORIZED)
+            return Response({'message': 'verified'}, status=status.HTTP_200_OK)
+        return Response({"message": 'you are not logged in!'}, status=status.HTTP_401_UNAUTHORIZED)
+
 
 class LoginView(APIView):
 
     lookup_url_kwarg = 'password'
     lookup_url_kwarg2 = 'username'
-    def post(self,request,format=None):
+
+    def post(self, request, format=None):
 
         # http://localhost:8000/api/login/
 
@@ -107,9 +113,10 @@ class LoginView(APIView):
             hashed = hashlib.sha256(password).hexdigest()
             if user.pswd_hash == hashed:
                 self.request.session['user'] = user.id
-                return Response({"message":"Done !"},status=status.HTTP_200_OK)
-            return Response({"message":"Incorrect !"},status=status.HTTP_401_UNAUTHORIZED)
-        return Response({"message":"User not found !"},status=status.HTTP_404_NOT_FOUND)
+                return Response({"message": "Done !"}, status=status.HTTP_200_OK)
+            return Response({"message": "Incorrect !"}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response({"message": "User not found !"}, status=status.HTTP_404_NOT_FOUND)
+
 
 class DocumentAPIViewset(
     mixins.CreateModelMixin,

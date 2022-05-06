@@ -7,16 +7,16 @@ class User(models.Model):
     emailid = models.EmailField(blank=False, null=False, unique=True, max_length=200)
     verified = models.BooleanField(default=False)
 
-    def __str__(self): 
+    def __str__(self):
         return f"{self.username} & {self.emailid}"
-    
+
 
 class Document(models.Model):
     name = models.CharField(max_length=255, blank=True)
     log_file = models.FileField(upload_to="logs/")
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self): 
+    def __str__(self):
         return self.name
 
 
@@ -26,9 +26,8 @@ class LogDetail(models.Model):
     line = models.TextField(blank=True, null=True)
     count = models.BigIntegerField(blank=True, null=True)
 
-    def __str__(self): 
+    def __str__(self):
         return f"{self.logfile.name} line - {self.count}"
 
     class Meta:
         ordering = ["count"]
-

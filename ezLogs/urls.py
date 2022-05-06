@@ -1,6 +1,13 @@
 from django.urls import path
-from .views import (DocumentAPIViewset, some_log_lines, CreateUserView, LogSearchView,
-                    IsAuthenticatedView, VerifiedView, LoginView)
+from .views import (
+    DocumentAPIViewset,
+    some_log_lines,
+    CreateUserView,
+    LogSearchView,
+    IsAuthenticatedView,
+    VerifiedView,
+    LoginView,
+)
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()

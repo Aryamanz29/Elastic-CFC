@@ -7,13 +7,13 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('ezLogs', '0004_user'),
+        ("ezLogs", "0004_user"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='logdetail',
-            name='user',
-            field=models.ForeignKey(default=None, on_delete=django.db.models.deletion.CASCADE, to='ezLogs.user'),
+            model_name="logdetail",
+            name="user",
+            field=models.ForeignKey(default=None, on_delete=django.db.models.deletion.CASCADE, to="ezLogs.user"),
         ),
     ]

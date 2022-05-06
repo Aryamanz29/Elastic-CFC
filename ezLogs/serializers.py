@@ -17,7 +17,7 @@ class LogDetailSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('emailid', 'username')
+        fields = ("emailid", "username")
 
 
 class LogSeachSerializer(serializers.Serializer):

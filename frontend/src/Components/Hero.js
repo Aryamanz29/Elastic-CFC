@@ -3,8 +3,11 @@ import { useState } from "react";
 import axios from "axios";
 import uploadLoader from "../images/uploadLoader.gif";
 import Loader from "react-loader-spinner";
-import { FaWindowClose } from "react-icons/fa";
+import { FaLandmark, FaWindowClose } from "react-icons/fa";
 import { MDBCloseIcon } from "react-icons/bs";
+import Navbar from "./Navbar";
+import '../Styles/index.css';
+import '../Styles/w3.css';
 
 const Hero = () => {
   const [descriptionError, setDescriptionError] = useState(false);
@@ -25,7 +28,7 @@ const Hero = () => {
       return;
     }
     setIsFileUploading(true);
-    let response = await getResonse(description);
+    let response = await getResponse(description);
 
     setDescriptionError(false);
     let lines = await getLogLines(response.id);
@@ -35,7 +38,7 @@ const Hero = () => {
       setSearchSection(true);
     }, 1000);
   };
-  const getResonse = async (description) => {
+  const getResponse = async (description) => {
     let formData = new FormData();
     console.log("from get_response", file, description);
     formData.append("log_file", file, file.name);
@@ -96,16 +99,19 @@ const Hero = () => {
     console.log(queryResponse);
   };
   return (
-    <>
+    <div>
+    <Navbar />
       <section className="hero-section">
-        <div className="file-form-container">
+        <div className=" w3-white w3-margin w3-padding-large w3-half file-form-container">
           <form className="file-form">
+          <h3>Upload Documents</h3>
+          <br />
             <div className="description-input-container">
               <label className="description">Description</label>
-              <input
+              <textarea
                 type="text"
                 value={description}
-                className="file-form-description-input"
+                className="file-form-description-input w3-border w3-round w3-input "
                 onChange={(e) => setDescription(e.target.value)}
                 required
               />
@@ -118,24 +124,26 @@ const Hero = () => {
                 ``
               )}
             </div>
-
-            <input
-              className="file-input"
-              type="file"
-              required
-              accept=".log"
-              onChange={(e) => {
-                console.log(e.target.files[0]);
-                setFile(e.target.files[0]);
-              }}
-            />
-
+            <br />
+            <div className="w3-container w3-padding w3-round-large w3-border" data-text="Select your file!">
+                <input                  
+                  name="file-upload-field"
+                  className="file-upload-field"
+                  type="file"
+                  required
+                  accept=".log"
+                  onChange={(e) => {
+                  console.log(e.target.files[0]);
+                  setFile(e.target.files[0]);
+                  }}
+                />
+            </div>
             <div className="file-form-submit-btn-container">
               <button
                 type="submit"
                 id="btn"
                 onClick={handleSubmitForFile}
-                className="file-form-submit-btn"
+                className="file-form-submit-btn w3-button w3-blue w3-text-white w3-round-large "
               >
                 submit
               </button>
@@ -191,7 +199,7 @@ const Hero = () => {
       ) : (
         ""
       )}
-    </>
+    </div>
   );
 };
 
